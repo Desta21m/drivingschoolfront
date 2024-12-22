@@ -7,6 +7,7 @@ import Footer from './components/Footer';
 import { Outlet } from 'react-router-dom';
 import Home from './views/Home';
 import Students from './views/Students/Students';
+import CarRents from './views/Rents/CarRents';
 import Vehicles from './views/Vehicles/Vehicles';
 import Courses from './views/Courser/Courses';
 import Instructors from './views/Instructors/Instructors';
@@ -27,6 +28,8 @@ import AvrageTest from './views/Tests/AvrageTest';
 import Active from './views/vechicleAssignment/Active';
 import Assigment from './views/vechicleAssignment/Assigment';
 import Inactive from './views/vechicleAssignment/Inactive';
+import UserSelectionPage from './Formy/UserSelectionPage';
+import RentCar from './Formy/RentCar';
 export const Layout = () => {
     return (
         <div className="layout">
@@ -142,6 +145,20 @@ const router = createBrowserRouter([
                 element: <Inactive />
 
             },
+            {
+                path: "/RentCar",
+                element: <CarRents />
+
+            },
+            {
+                path: "/user-selection",
+                element: <UserSelectionPage />
+            },
+            {
+                path: "/rent-car",
+                element: <RentCar />
+            },
+
         ]
     },
 ]); 

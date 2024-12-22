@@ -1,4 +1,3 @@
-// AddVehicle.tsx
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodType } from 'zod';
@@ -13,14 +12,16 @@ type VehicleType = {
     color: string;
     registrationDate: string;
     maintenanceDate: string;
+    canBeRented: boolean; // New field
+    rantPerHour: number;  // Make sure it's a number
 };
 
-type Props = {
-}
+type Props = {};
 
 const AddVehicle: React.FC<Props> = ({ }) => {
     const [disabled, setDisabled] = useState(false);
 
+    // Updated Zod schema to include new fields
     const schema: ZodType<VehicleType> = z.object({
         make: z.string().max(45, 'Too long').min(1, 'Required'),
         model: z.string().max(45, 'Too long').min(1, 'Required'),
@@ -29,6 +30,8 @@ const AddVehicle: React.FC<Props> = ({ }) => {
         color: z.string().min(1, 'Required'),
         registrationDate: z.string().min(1, 'Required'),
         maintenanceDate: z.string().min(1, 'Required'),
+        canBeRented: z.boolean(),
+        rantPerHour: z.number().min(0, 'Rent per hour must be a positive number'),
     });
 
     const { register, handleSubmit, formState: { errors } } = useForm<VehicleType>({ resolver: zodResolver(schema) });
@@ -47,41 +50,49 @@ const AddVehicle: React.FC<Props> = ({ }) => {
 
     return (
         <div className="grid place-items-center">
-            <div className=" p-12 bg-white ">
-                <h1 className="text-xl font-semibold">Add vehicle<br /> <span className="font-normal"></span></h1>
+            <div className="p-12 bg-white">
+                <h1 className="text-xl font-semibold">Add vehicle</h1>
                 <form className="mt-6" onSubmit={handleSubmit(onSubmit)}>
                     <div className="flex justify-between gap-3">
                         <span className="w-1/2">
                             <label htmlFor="make" className="block text-xs font-semibold text-gray-600 uppercase">Make</label>
-                            <input id="make" type="text" placeholder="Toyota" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.make && "border-red-500"}`} {...register('make', { required: true })} />
+                            <input id="make" type="text" placeholder="Toyota" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.make && "border-red-500"}`} {...register('make')} />
                             {errors.make && <span className="text-red-500 text-xs">{errors.make.message}</span>}
                         </span>
                         <span className="w-1/2">
                             <label htmlFor="model" className="block text-xs font-semibold text-gray-600 uppercase">Model</label>
-                            <input id="model" type="text" placeholder="Corolla" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.model && "border-red-500"}`} {...register('model', { required: true })} />
+                            <input id="model" type="text" placeholder="Corolla" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.model && "border-red-500"}`} {...register('model')} />
                             {errors.model && <span className="text-red-500 text-xs">{errors.model.message}</span>}
                         </span>
                     </div>
 
                     <label htmlFor="year" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Year</label>
-                    <input id="year" type="text" placeholder="2023" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.year && "border-red-500"}`} {...register('year', { required: true })} />
+                    <input id="year" type="text" placeholder="2023" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.year && "border-red-500"}`} {...register('year')} />
                     {errors.year && <span className="text-red-500 text-xs">{errors.year.message}</span>}
 
                     <label htmlFor="licensePlate" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">License Plate</label>
-                    <input id="licensePlate" type="text" placeholder="AB123CD" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.licensePlate && "border-red-500"}`} {...register('licensePlate', { required: true })} />
+                    <input id="licensePlate" type="text" placeholder="AB123CD" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.licensePlate && "border-red-500"}`} {...register('licensePlate')} />
                     {errors.licensePlate && <span className="text-red-500 text-xs">{errors.licensePlate.message}</span>}
 
                     <label htmlFor="color" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Color</label>
-                    <input id="color" type="text" placeholder="Blue" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.color && "border-red-500"}`} {...register('color', { required: true })} />
+                    <input id="color" type="text" placeholder="Blue" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.color && "border-red-500"}`} {...register('color')} />
                     {errors.color && <span className="text-red-500 text-xs">{errors.color.message}</span>}
 
                     <label htmlFor="registrationDate" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Registration Date</label>
-                    <input id="registrationDate" type="date" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.registrationDate && "border-red-500"}`} {...register('registrationDate', { required: true })} />
+                    <input id="registrationDate" type="date" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.registrationDate && "border-red-500"}`} {...register('registrationDate')} />
                     {errors.registrationDate && <span className="text-red-500 text-xs">{errors.registrationDate.message}</span>}
 
                     <label htmlFor="maintenanceDate" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Maintenance Date</label>
-                    <input id="maintenanceDate" type="date" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.maintenanceDate && "border-red-500"}`} {...register('maintenanceDate', { required: true })} />
+                    <input id="maintenanceDate" type="date" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.maintenanceDate && "border-red-500"}`} {...register('maintenanceDate')} />
                     {errors.maintenanceDate && <span className="text-red-500 text-xs">{errors.maintenanceDate.message}</span>}
+
+                    <label htmlFor="canBeRented" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Can be Rented</label>
+                    <input id="canBeRented" type="checkbox" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.canBeRented && "border-red-500"}`} {...register('canBeRented')} />
+                    {errors.canBeRented && <span className="text-red-500 text-xs">{errors.canBeRented.message}</span>}
+
+                    <label htmlFor="rantPerHour" className="block mt-2 text-xs font-semibold text-gray-600 uppercase">Course Fee</label>
+                    <input id="rantPerHour" type="number" placeholder="Course Fee ($)" className={`block w-full p-3 mt-2 text-gray-700 bg-gray-200 appearance-none focus:outline-none focus:bg-gray-300 focus:shadow-inner ${errors.rantPerHour && "border-red-500"}`} {...register('rantPerHour', { required: true, valueAsNumber:true })} />
+                    {errors.rantPerHour && <span className="text-red-500 text-xs">{errors.rantPerHour.message}</span>}
 
                     <button type="submit" disabled={disabled} className="w-full py-3 mt-6 text-white bg-gray-800 uppercase shadow-lg focus:outline-none hover:bg-gray-400 hover:shadow-none">
                         Add Vehicle
