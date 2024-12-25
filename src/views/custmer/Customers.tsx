@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Popup from '../../components/Popup';
-import AddStudent from '../../Formy/AddStudent';
-import axios from 'axios';
+import AddCustomer from '../../Formy/AddCustomer';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
-const Students = () => {
-  const [students, setStudents] = useState([]);
+const Customers = () => {
+  const [customers, setCustomers] = useState([]);
 
   useEffect(() => {
-    const fetchStudents = async () => {
+    const fetchCustomers = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/students/today_lessons');
-        setStudents(response.data);
+        const response = await axios.get('http://localhost:8080/api/customers');
+        setCustomers(response.data);
         console.log(response);
       } catch (err) {
-        console.error('Error fetching students:', err);
+        console.error('Error fetching customers:', err);
       }
     };
 
-    fetchStudents();
+    fetchCustomers();
   }, []);
 
   return (
@@ -33,26 +33,10 @@ const Students = () => {
             <ul className="space-y-3">
               <li>
                 <Link
-                  to="/Students"
+                  to="/Customers"
                   className="flex items-center p-2 text-base font-medium text-black rounded-lg hover:text-red-600 hover:bg-gray-100"
                 >
-                  <span className="ml-3">Students</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/Todaylesson"
-                  className="flex items-center p-2 text-base font-medium text-black rounded-lg hover:text-red-600 hover:bg-gray-100"
-                >
-                  <span className="ml-3">Today Lesson</span>
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/StudentsWhoStartedInYear"
-                  className="flex items-center p-2 text-base font-medium text-black rounded-lg hover:text-red-600 hover:bg-gray-100"
-                >
-                  <span className="ml-3">Students Who Started in Year</span>
+                  <span className="ml-3">Customers</span>
                 </Link>
               </li>
             </ul>
@@ -61,9 +45,9 @@ const Students = () => {
 
         <div className="p-4 sm:ml-64">
           <div className="relative flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">Students</h1>
-            <Popup buttonText="Add Student">
-              <AddStudent />
+            <h1 className="text-2xl font-bold text-gray-800">Customers</h1>
+            <Popup buttonText="Add Customer">
+              <AddCustomer />
             </Popup>
           </div>
 
@@ -78,17 +62,21 @@ const Students = () => {
                     <th className="px-6 py-3">Date of Birth</th>
                     <th className="px-6 py-3">Phone Number</th>
                     <th className="px-6 py-3">Address</th>
+                    <th className="px-6 py-3">Referral Source</th>
+                    <th className="px-6 py-3">Company Name</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {students.map((student, index) => (
+                  {customers.map((customer, index) => (
                     <tr key={index} className="bg-white border-b hover:bg-gray-100">
-                      <td className="px-6 py-4 font-medium text-gray-900">{student.email}</td>
-                      <td className="px-6 py-4">{student.firstName}</td>
-                      <td className="px-6 py-4">{student.lastName}</td>
-                      <td className="px-6 py-4">{student.dateOfBirth}</td>
-                      <td className="px-6 py-4">{student.phoneNumber}</td>
-                      <td className="px-6 py-4">{student.address}</td>
+                      <td className="px-6 py-4 font-medium text-gray-900">{customer.email}</td>
+                      <td className="px-6 py-4">{customer.firstName}</td>
+                      <td className="px-6 py-4">{customer.lastName}</td>
+                      <td className="px-6 py-4">{customer.dateOfBirth}</td>
+                      <td className="px-6 py-4">{customer.phoneNumber}</td>
+                      <td className="px-6 py-4">{customer.address}</td>
+                      <td className="px-6 py-4">{customer.referralSource}</td>
+                      <td className="px-6 py-4">{customer.companyName}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -101,4 +89,4 @@ const Students = () => {
   );
 };
 
-export default Students;
+export default Customers;

@@ -3,19 +3,36 @@ import Popup from '../../components/Popup';
 import AddInstructor from '../../Formy/AddInstructor';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Select from 'react-select';
 
 const Instructors = () => {
   const [instructors, setInstructors] = useState([]);
-  const [selectedMonth, setSelectedMonth] = useState("");
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const [selectedMonth, setSelectedMonth] = useState(null);
+
+  // Months mapped to their corresponding integer values (1-12)
+  const months = [
+    { value: 1, label: "January" },
+    { value: 2, label: "February" },
+    { value: 3, label: "March" },
+    { value: 4, label: "April" },
+    { value: 5, label: "May" },
+    { value: 6, label: "June" },
+    { value: 7, label: "July" },
+    { value: 8, label: "August" },
+    { value: 9, label: "September" },
+    { value: 10, label: "October" },
+    { value: 11, label: "November" },
+    { value: 12, label: "December" },
+  ];
 
   useEffect(() => {
-    if (selectedMonth !== "") {
+    if (selectedMonth) {
       const fetchInstructors = async () => {
         try {
-          const response = await axios.get(`http://localhost:8080/api/instructors/birthday/${selectedMonth}`);
+          const response = await axios.get(
+            `http://localhost:8080/api/instructors/birthday/${selectedMonth}`
+          );
           setInstructors(response.data);
-          console.log(response);
         } catch (err) {
           console.error('Error fetching instructors:', err);
         }
@@ -24,89 +41,102 @@ const Instructors = () => {
     }
   }, [selectedMonth]);
 
-  const handleMonthSelect = (event) => {
-    setSelectedMonth(months.indexOf(event.target.value) + 1);
+  const handleMonthSelect = (selectedOption) => {
+    setSelectedMonth(selectedOption.value);
   };
 
   return (
     <div>
-      <section className="min-h-screen bg-slate-800 font-sans text-center">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/flowbite.min.css" rel="stylesheet" />
-        <button data-drawer-target="default-sidebar" data-drawer-toggle="default-sidebar" aria-controls="default-sidebar" type="button" className="inline-flex items-center p-2 mt-2 ml-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700">
-          <span className="sr-only">Open sidebar</span>
-          <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-            <path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
-          </svg>
-        </button>
-        <Popup buttonText="Add Instructor">
-          <AddInstructor />
-        </Popup>
-        <aside id="default-sidebar" className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0" aria-label="Sidenav">
-          <div className="overflow-y-auto py-5 px-3 h-full  border-r  bg-gray-800 border-gray-700">
-            <ul className="space-y-2">
+      <section className="min-h-screen bg-slate-200 text-center font-sans">
+        <aside
+          id="default-sidebar"
+          className="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+          aria-label="Sidebar"
+        >
+          <div className="overflow-y-auto py-5 px-3 h-full bg-white border-r border-gray-300">
+            <ul className="space-y-3">
               <li>
-                <Link to="/Instructors" className="flex items-center p-2 text-base font-normal text-blue-700 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <svg aria-hidden="true" className="w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                  </svg>
+                <Link
+                  to="/Instructors"
+                  className="flex items-center p-2 text-base font-medium text-black rounded-lg hover:text-red-600 hover:bg-gray-100"
+                >
                   <span className="ml-3">Instructors</span>
                 </Link>
               </li>
               <li>
-                <Link to="/InstructorsBirthday" className="flex items-center p-2 text-base font-normal text-blue-700 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <svg aria-hidden="true" className="w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                  </svg>
+                <Link
+                  to="/InstructorsBirthday"
+                  className="flex items-center p-2 text-base font-medium text-black rounded-lg hover:text-red-600 hover:bg-gray-100"
+                >
                   <span className="ml-3">InstructorsBirthday</span>
                 </Link>
               </li>
               <li>
-                <Link to="/InstructorsMaxLesson" className="flex items-center p-2 text-base font-normal text-blue-700 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                  <svg aria-hidden="true" className="w-6 h-6 text-gray-400 transition duration-75 dark:text-gray-400 group-hover:text-gray-900 dark:group-hover:text-white" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M2 10a8 8 0 018-8v8h8a8 8 0 11-16 0z"></path>
-                    <path d="M12 2.252A8.014 8.014 0 0117.748 8H12V2.252z"></path>
-                  </svg>
+                <Link
+                  to="/InstructorsMaxLesson"
+                  className="flex items-center p-2 text-base font-medium text-black rounded-lg hover:text-red-600 hover:bg-gray-100"
+                >
                   <span className="ml-3">InstructorsMaxLesson</span>
                 </Link>
               </li>
             </ul>
           </div>
         </aside>
+
         <div className="p-4 sm:ml-64">
-          <div className="mx-auto flex-1 p-3">
-            <p className="text-lg text-white">Please select a month to show the instructors' birthdays:</p>
-            <select onChange={handleMonthSelect} value={selectedMonth} className="text-white text-lg bg-gray-800">
-              <option>Select a month...</option>
-              {months.map((month, index) =>
-                <option key={index} value={month} className="text-white text-lg bg-gray-800">{month}</option>
-              )}
-            </select>
-            <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <div className="relative flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-gray-800">InstructorsBirthday</h1>
+            <Popup buttonText="Add Instructor">
+              <AddInstructor />
+            </Popup>
+          </div>
+
+          <div className="relative mt-6 bg-white border border-gray-300 rounded-lg p-4">
+            <p className="text-lg text-gray-800">Please select a month to show the instructors' birthdays:</p>
+
+            <div className="mt-4 mb-6 text-lg flex justify-start">
+              <Select
+                value={months.find((option) => option.value === selectedMonth)}
+                onChange={handleMonthSelect}
+                options={months}
+                classNamePrefix="custom-select"
+              />
+            </div>
+
+            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+              <table className="w-full text-sm text-left text-gray-600">
+                <thead className="text-xs text-gray-500 uppercase bg-gray-50">
                   <tr>
-                    <th scope="col" className="px-6 py-3">Email</th>
-                    <th scope="col" className="px-6 py-3">First Name</th>
-                    <th scope="col" className="px-6 py-3">Last Name</th>
-                    <th scope="col" className="px-6 py-3">Date of Birth</th>
-                    <th scope="col" className="px-6 py-3">Phone Number</th>
-                    <th scope="col" className="px-6 py-3">Address</th>
+                    <th className="px-6 py-3">Email</th>
+                    <th className="px-6 py-3">First Name</th>
+                    <th className="px-6 py-3">Last Name</th>
+                    <th className="px-6 py-3">Date of Birth</th>
+                    <th className="px-6 py-3">Phone Number</th>
+                    <th className="px-6 py-3">Address</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {instructors[0] && instructors.map((instructor, index) => (
-                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                      <td className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">{instructor.email}</td>
-                      <td className="px-6 py-4">{instructor.firstName}</td>
-                      <td className="px-6 py-4">{instructor.lastName}</td>
-                      <td className="px-6 py-4">{instructor.dateOfBirth}</td>
-                      <td className="px-6 py-4">{instructor.phoneNumber}</td>
-                      <td className="px-6 py-4">{instructor.address}</td>
+                  {instructors.length > 0 ? (
+                    instructors.map((instructor, index) => (
+                      <tr key={index} className="bg-white border-b hover:bg-gray-100">
+                        <td className="px-6 py-4 font-medium text-gray-900">{instructor.email}</td>
+                        <td className="px-6 py-4">{instructor.firstName}</td>
+                        <td className="px-6 py-4">{instructor.lastName}</td>
+                        <td className="px-6 py-4">{instructor.dateOfBirth}</td>
+                        <td className="px-6 py-4">{instructor.phoneNumber}</td>
+                        <td className="px-6 py-4">{instructor.address}</td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="6" className="text-center px-6 py-4 text-gray-500">
+                        No instructors found.
+                      </td>
                     </tr>
-                  ))}
+                  )}
                 </tbody>
               </table>
+            </div>
           </div>
         </div>
       </section>

@@ -30,6 +30,8 @@ import Assigment from './views/vechicleAssignment/Assigment';
 import Inactive from './views/vechicleAssignment/Inactive';
 import UserSelectionPage from './Formy/UserSelectionPage';
 import RentCar from './Formy/RentCar';
+import Customers from './views/custmer/Customers';
+import Rented from './views/Vehicles/Rented';
 export const Layout = () => {
     return (
         <div className="layout">
@@ -64,6 +66,10 @@ const router = createBrowserRouter([
             {
                 path: "/Assigned",
                 element: <Assigned />
+            },
+            {
+                path: "/Rented",
+                element: <Rented />
             },
             {
                 path: "/Maintenance",
@@ -158,7 +164,10 @@ const router = createBrowserRouter([
                 path: "/rent-car",
                 element: <RentCar />
             },
-
+            {
+                path: "/customers",
+                element: <Customers/>
+            },
         ]
     },
 ]); 
