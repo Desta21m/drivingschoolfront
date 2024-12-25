@@ -7,11 +7,28 @@ import AddLessons from '../../Formy/AddLessons';
 
 const Lessons = () => {
   const [lessons, setLessons] = useState([]);
-
+  const [instructors, setInstructors] = useState([]);
+  const [selectedInstructorId, setSelectedInstructorId] = useState(1); // Default to the first instructor
+  
+  // Fetch instructors when component mounts
   useEffect(() => {
-    const fetchVehicles = async () => {
+    const fetchInstructors = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/lessons/upcoming/1');
+        const response = await axios.get('http://localhost:8080/api/instructors');
+        setInstructors(response.data);
+      } catch (err) {
+        console.error('Error fetching instructors:', err);
+      }
+    };
+
+    fetchInstructors();
+  }, []);
+
+  // Fetch lessons for the selected instructor
+  useEffect(() => {
+    const fetchLessons = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8080/api/lessons/upcoming/${selectedInstructorId}`);
         setLessons(response.data);
         console.log(response);
       } catch (err) {
@@ -19,8 +36,12 @@ const Lessons = () => {
       }
     };
 
-    fetchVehicles();
-  }, []);
+    fetchLessons();
+  }, [selectedInstructorId]); // Re-fetch lessons when the selected instructor changes
+
+  const handleInstructorChange = (event) => {
+    setSelectedInstructorId(event.target.value);
+  };
 
   return (
     <div>
@@ -66,6 +87,23 @@ const Lessons = () => {
             <Popup buttonText="Add Lessons">
               <AddLessons />
             </Popup>
+          </div>
+
+          {/* Instructor selection dropdown */}
+          <div className="mt-4">
+            <label htmlFor="instructor-select" className="mr-2">Select Instructor:</label>
+            <select
+              id="instructor-select"
+              value={selectedInstructorId}
+              onChange={handleInstructorChange}
+              className="border px-4 py-2 rounded"
+            >
+              {instructors.map((instructor) => (
+                <option key={instructor.id} value={instructor.id}>
+                  {instructor.firstName}-{instructor.lastName}
+                </option>
+              ))}
+            </select>
           </div>
 
           <div className="mt-6 bg-white border border-gray-300 rounded-lg p-4">

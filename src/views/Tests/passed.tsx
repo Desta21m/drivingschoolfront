@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Popup from '../../components/Popup';
-import AddVehicle from '../../Formy/AddVehicle';
 import AddTest from '../../Formy/AddTest';
 
 const Test = () => {
-  const [students, setStudents] = useState([]);
-  const [tests, setTests] = useState([]);
-  const [selectedStudent, setSelectedStudent] = useState('');
+  const [students, setStudents] = useState([]); // List of students
+  const [tests, setTests] = useState([]); // List of tests for the selected student
+  const [selectedStudent, setSelectedStudent] = useState(''); // Selected student's ID
 
+  // Fetch all students on component mount
   useEffect(() => {
     const fetchStudents = async () => {
       try {
@@ -22,6 +22,7 @@ const Test = () => {
     fetchStudents();
   }, []);
 
+  // Fetch tests for the selected student
   const fetchTests = async (studentId) => {
     try {
       const response = await axios.get(`http://localhost:8080/api/tests/passed/${studentId}`);
@@ -31,10 +32,15 @@ const Test = () => {
     }
   };
 
+  // Handle student selection
   const handleStudentSelect = (event) => {
     const studentId = event.target.value;
     setSelectedStudent(studentId);
-    fetchTests(studentId);
+    if (studentId) {
+      fetchTests(studentId);
+    } else {
+      setTests([]);
+    }
   };
 
   return (
@@ -70,19 +76,21 @@ const Test = () => {
           <div className="relative mt-6 bg-white border border-gray-300 rounded-lg p-4">
             <p className="text-lg text-gray-800">Please select a student to show their passed tests:</p>
 
+            {/* Student Selection Dropdown */}
             <select
               onChange={handleStudentSelect}
               value={selectedStudent}
               className="mt-4 mb-6 text-lg bg-gray-800 text-white p-2 rounded-lg"
             >
-              <option>Select a student...</option>
+              <option value="">Select a student...</option>
               {students.map((student) => (
-                <option key={student.studentId} value={student.studentId}>
-                  {student.studentId} {student.firstName} {student.lastName}
+                <option key={student.id} value={student.id}>
+                   - {student.firstName} {student.lastName}
                 </option>
               ))}
             </select>
 
+            {/* Test Table */}
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
               <table className="w-full text-sm text-left text-gray-600">
                 <thead className="text-xs text-gray-500 uppercase bg-gray-50">

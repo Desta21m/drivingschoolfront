@@ -1,31 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import Popup from '../../components/Popup';
-import AddVehicle from '../../Formy/AddVehicle';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
 const Test = () => {
-  const [tests, setTests] = useState([]);
   const [courses, setCourses] = useState([]);
-  const [courseId, setCourseId] = useState('1');
+  const [selectedCourse, setSelectedCourse] = useState('');
+  const [averageScore, setAverageScore] = useState(null);
 
-  const fetchVehicles = async (id) => {
+  // Fetch all available courses
+  const fetchCourses = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/tests/average/${id}`);
-      setTests(response.data);
-      console.log(response);
+      const response = await axios.get('http://localhost:8080/api/courses');
+      setCourses(response.data);
     } catch (err) {
-      console.error('Error fetching tests:', err);
+      console.error('Error fetching courses:', err);
     }
   };
 
-  const fetchCourses = async () => {
+  // Fetch the average score for a selected course
+  const fetchAverageScore = async (courseId) => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/courses`);
-      setCourses(response.data);
-      console.log(response);
+      const response = await axios.get(`http://localhost:8080/api/tests/average/${courseId}`);
+      setAverageScore(response.data);
     } catch (err) {
-      console.error('Error fetching courses:', err);
+      console.error('Error fetching average score:', err);
     }
   };
 
@@ -33,8 +31,10 @@ const Test = () => {
     fetchCourses();
   }, []);
 
-  const handleButtonClick = () => {
-    fetchVehicles(courseId);
+  const handleCourseChange = (event) => {
+    const courseId = event.target.value;
+    setSelectedCourse(courseId);
+    if (courseId) fetchAverageScore(courseId);
   };
 
   return (
@@ -65,10 +65,10 @@ const Test = () => {
               </li>
               <li>
                 <Link
-                  to="/AvrageTest"
+                  to="/AverageTest"
                   className="flex items-center p-2 text-base font-medium text-black rounded-lg hover:text-red-600 hover:bg-gray-100"
                 >
-                  <span className="ml-3">AvrageTest</span>
+                  <span className="ml-3">Average Test</span>
                 </Link>
               </li>
             </ul>
@@ -76,35 +76,31 @@ const Test = () => {
         </aside>
 
         <div className="p-4 sm:ml-64">
-          <div className="relative flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-800">Average Test Results</h1>
-          </div>
-
-          <p className="text-lg font-bold mb-2">Please select which course you want to see the average result from:</p>
+          <h1 className="text-2xl font-bold text-gray-800">Average Test Results</h1>
+          <p className="text-lg font-bold my-4">Please select a course to view the average test result:</p>
+          
           <select
             className="mb-4 bg-white rounded border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-200 text-black"
-            value={courseId}
-            onChange={(e) => {
-              setCourseId(e.target.value);
-              fetchVehicles(e.target.value);
-            }}
+            value={selectedCourse}
+            onChange={handleCourseChange}
           >
+            <option value="">Select a course...</option>
             {courses.map((course) => (
-              <option key={course.id} value={course.courseId}>
-                {course.courseId + " " + course.courseName}
+              <option key={course.courseId} value={course.courseId}>
+                {course.courseId} - {course.courseName}
               </option>
             ))}
           </select>
 
-          <div className="mx-auto flex-1 p-3">
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <p className="text-sm">
-                {tests && `The average result for ${
-                  (courses.find(course => course.courseId == courseId) || {}).courseName
-                } is ${tests}`}
+          {averageScore !== null && (
+            <div className="mt-6">
+              <p className="text-lg">
+                The average test score for{' '}
+                <strong>{courses.find((course) => course.courseId === parseInt(selectedCourse))?.courseName}</strong> is{' '}
+                <strong>{averageScore.toFixed(2)}</strong>.
               </p>
             </div>
-          </div>
+          )}
         </div>
       </section>
     </div>

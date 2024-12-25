@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Popup from '../../components/Popup';
 import AddStudent from '../../Formy/AddStudent';
 import { Link } from 'react-router-dom';
@@ -6,20 +6,23 @@ import axios from 'axios';
 
 const Students = () => {
   const [students, setStudents] = useState([]);
+  const [year, setYear] = useState(''); // State for user input year
+  const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchStudents = async () => {
-      try {
-        const response = await axios.get('http://localhost:8080/api/students/started/2023');
-        setStudents(response.data);
-        console.log(response);
-      } catch (err) {
-        console.error('Error fetching students:', err);
-      }
-    };
-
-    fetchStudents();
-  }, []);
+  const fetchStudentsByYear = async () => {
+    if (!year || isNaN(year)) {
+      setError('Please enter a valid year.');
+      return;
+    }
+    setError(null);
+    try {
+      const response = await axios.get(`http://localhost:8080/api/students/started/${year}`);
+      setStudents(response.data);
+    } catch (err) {
+      console.error('Error fetching students:', err);
+      setError('Failed to fetch students. Please try again.');
+    }
+  };
 
   return (
     <div>
@@ -68,6 +71,24 @@ const Students = () => {
           </div>
 
           <div className="mt-6 bg-white border border-gray-300 rounded-lg p-4">
+            <div className="mb-4">
+              <input
+                type="text"
+                placeholder="Enter year (e.g., 2023)"
+                value={year}
+                onChange={(e) => setYear(e.target.value)}
+                className="p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              />
+              <button
+                onClick={fetchStudentsByYear}
+                className="ml-2 px-4 py-2 text-white bg-blue-600 rounded-md hover:bg-blue-700"
+              >
+                Fetch Students
+              </button>
+            </div>
+
+            {error && <p className="text-red-600">{error}</p>}
+
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
               <table className="w-full text-sm text-left text-gray-600">
                 <thead className="text-xs text-gray-500 uppercase bg-gray-50">
