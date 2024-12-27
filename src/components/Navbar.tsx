@@ -54,19 +54,19 @@ const Navbar = () => {
                 <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 w-40 z-10">
                   <p
                     onClick={() => navigate('/instructors')}
-                    className="block py-2 px-4 text-gray-700 hover:bg-red-600 hover:text-white cursor-pointer"
+                    className="block py-2 px-4 text-gray-700 hover:bg-red-50 hover:text-black cursor-pointer"
                   >
                     Instructor
                   </p>
                   <p
                     onClick={() => navigate('/customers')}
-                    className="block py-2 px-4 text-gray-700 hover:bg-red-600 hover:text-white cursor-pointer"
+                    className="block py-2 px-4 text-gray-700 hover:bg-red-50 hover:text-black cursor-pointer"
                   >
                     Customer
                   </p>
                   <p
                     onClick={() => navigate('/students')}
-                    className="block py-2 px-4 text-gray-700 hover:bg-red-600 hover:text-white cursor-pointer"
+                    className="block py-2 px-4 text-gray-700 hover:bg-red-50 hover:text-black cursor-pointer"
                   >
                     Student
                   </p>
@@ -78,25 +78,25 @@ const Navbar = () => {
                 <div className="absolute hidden group-hover:block bg-white shadow-lg rounded-md mt-2 w-40 z-10">
                   <p
                     onClick={() => navigate('/tests')}
-                    className="block py-2 px-4 text-gray-700 hover:bg-red-600 hover:text-white cursor-pointer"
+                    className="block py-2 px-4 text-gray-700 hover:bg-red-50 hover:text-black cursor-pointer"
                   >
                     Test
                   </p>
                   <p
                     onClick={() => navigate('/lessons')}
-                    className="block py-2 px-4 text-gray-700 hover:bg-red-600 hover:text-white cursor-pointer"
+                    className="block py-2 px-4 text-gray-700 hover:bg-red-50 hover:text-black cursor-pointer"
                   >
                     Lesson
                   </p>
                   <p
                     onClick={() => navigate('/courses')}
-                    className="block py-2 px-4 text-gray-700 hover:bg-red-600 hover:text-white cursor-pointer"
+                    className="block py-2 px-4 text-gray-700 hover:bg-red-50 hover:text-black cursor-pointer"
                   >
                     Course
                   </p>
                   <p
                     onClick={() => navigate('/vehicles')}
-                    className="block py-2 px-4 text-gray-700 hover:bg-red-600 hover:text-white cursor-pointer"
+                    className="block py-2 px-4 text-gray-700 hover:bg-red-50 hover:text-black cursor-pointer"
                   >
                     Vehicle
                   </p>
