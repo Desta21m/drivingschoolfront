@@ -1,6 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 20s linear infinite;
+}
+
+.testimonials-container {
+  display: flex;
+  overflow: hidden;
+}
+
+.testimonials-wrapper {
+  display: flex;
+  width: max-content;
+}
+.diagonal-divider {
+  clip-path: polygon(0 0, 100% 30%, 100% 100%, 0 100%);
+}
+
+
+
 /* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;

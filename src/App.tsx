@@ -32,9 +32,14 @@ import UserSelectionPage from './Formy/UserSelectionPage';
 import RentCar from './Formy/RentCar';
 import Customers from './views/custmer/Customers';
 import Rented from './views/Vehicles/Rented';
+import About from './views/page/About';
+import ContactUs from './views/page/ContactUs';
+import Info from './components/Info';
+import CoursesPage from './views/page/CoursesPage';
 export const Layout = () => {
     return (
         <div className="layout">
+            <Info />
             <Navbar />
             <Outlet />
             <Footer />
@@ -167,6 +172,18 @@ const router = createBrowserRouter([
             {
                 path: "/customers",
                 element: <Customers/>
+            },
+            {
+                path: "/About",
+                element: <About />
+            },
+            {
+                path: "/ContactUs",
+                element: <ContactUs/>
+            },
+            {     
+                path: "/CoursesPage",
+                element: <CoursesPage />
             },
         ]
     },
