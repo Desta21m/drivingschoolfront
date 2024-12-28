@@ -1,16 +1,18 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+  const { t } = useTranslation('home');
   return (
     <section className="bg-white">
       <div className="px-4 mx-auto max-w-screen-xl text-center py-24 lg:py-56">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center">
           <div className="sm:w-1/2">
             <h1 className="relative mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-6xl">
-              Welcome to Skill<span className="text-red-500">Weel</span>
+           <div> {t("heroTitel")} </div> Skill<span className="text-red-500">Weel</span>
             </h1>
             <p className="mb-8 text-lg font-normal text-gray-600 lg:text-xl sm:px-16 lg:px-48">
-              - an innovative driving school management application!
+              {t("heroText")}
             </p>
           </div>
           <div className="sm:w-1/2">

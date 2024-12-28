@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
 
 const TestimonialData = [
@@ -35,6 +36,8 @@ const TestimonialData = [
 ];
 
 const Testimonials = () => {
+
+  const { t } = useTranslation('home');
   const settings = {
     dots: true,
     arrows: false,
@@ -79,14 +82,13 @@ const Testimonials = () => {
         {/* Header section */}
         <div className="text-center mb-10 max-w-[600px] mx-auto">
           <p data-aos="fade-up" className="text-sm text-primary">
-            What our customers are saying
+          {t("tastiTxt")}
           </p>
           <h1 data-aos="fade-up" className="text-3xl font-bold">
-            Testimonials
+          {t("tastiTitel")}
           </h1>
           <p data-aos="fade-up" className="text-xs text-gray-400">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Sit
-            asperiores modi Sit asperiores modi
+          {t("tastiText")}
           </p>
         </div>
 

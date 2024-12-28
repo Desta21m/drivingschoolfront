@@ -38,7 +38,7 @@ import Info from './components/Info';
 import CoursesPage from './views/page/CoursesPage';
 export const Layout = () => {
     return (
-        <div className="layout">
+        <div className="layout"> 
             <Info />
             <Navbar />
             <Outlet />

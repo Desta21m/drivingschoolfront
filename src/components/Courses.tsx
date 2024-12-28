@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 // const courses = [
 //   {
@@ -61,6 +62,8 @@ import React, { useEffect, useState } from 'react';
 
 const Courses = () => {
 
+    const { t } = useTranslation('home');
+
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
@@ -81,7 +84,7 @@ const Courses = () => {
         <div className="bg-gray-100 py-16 border-t-2 border-black"></div>
         <div className="bg-gray-100 py-16 border-t-1 border-black"></div>
       <div className="max-w-screen-xl mx-auto px-4 text-center">
-        <h2 className="text-3xl font-bold mb-6 text-red-600">Our Courses</h2>
+        <h2 className="text-3xl font-bold mb-6 text-red-600">{t("coursTitel")}</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course) => (
             <div
@@ -105,7 +108,7 @@ const Courses = () => {
                 </div>
 
                 <button className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-red-500 focus:outline-none">
-                  Learn More
+                {t("coursbuton")}
                 </button>
               </div>
             </div>
